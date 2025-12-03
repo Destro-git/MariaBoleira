@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confeitaria Maria Silva - Bolos Artesanais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cor-principal: #D4A574;
+            --cor-secundaria: #F5E6D3;
+            --cor-terciaria: #E8C4A0;
+            --cor-destaque: #B8956A;
+            --cor-escura: #8B6F47;
+            --cor-texto: #5D4E37;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: var(--cor-texto);
+            background-color: #FFF9F0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--cor-principal), var(--cor-terciaria));
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: 0.3s;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #E63946;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(212, 165, 116, 0.8), rgba(232, 196, 160, 0.8)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23F5E6D3" width="1200" height="600"/><circle cx="200" cy="150" r="100" fill="%23E8C4A0" opacity="0.3"/><circle cx="900" cy="400" r="150" fill="%23D4A574" opacity="0.3"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            background: var(--cor-escura);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--cor-escura);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .gallery-info {
+            padding: 1.5rem;
+        }
+
+        .gallery-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--cor-escura);
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: var(--cor-principal);
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--cor-escura);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .testimonials {
+            background: var(--cor-secundaria);
+            padding: 4rem 2rem;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--cor-principal);
+        }
+
+        .rating {
+            color: #FFD700;
+            font-size: 1.2rem;
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--cor-secundaria);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .remove-item {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+            color: var(--cor-escura);
+        }
+
+        .price-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .price-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .price-card h3 {
+            color: var(--cor-escura);
+            margin-bottom: 1rem;
+        }
+
+        .price-card .price {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        .price-card ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .price-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--cor-secundaria);
+        }
+
+        footer {
+            background: var(--cor-escura);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: var(--cor-principal);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Maria Silva</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#galeria">Galeria</a></li>
+                <li><a href="#precos">Preços</a></li>
+                <li><a href="#personalizacao">Personalizar</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Bem-vindo à Confeitaria Maria Silva</h1>
+        <p>Bolos artesanais feitos com amor e dedicação</p>
+        <a href="#galeria" class="btn">Ver Bolos</a>
+    </section>
+
+    <section id="galeria" class="section">
+        <h2 class="section-title">Nossa Galeria de Bolos</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=400&fit=crop" alt="Bolo de Chocolate">
+                <div class="gallery-info">
+                    <h3>Bolo de Chocolate</h3>
+                    <p>Delicioso bolo de chocolate com ganache</p>
+                    <div class="price">R$ 85,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo de Chocolate', 85)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&h=400&fit=crop" alt="Bolo de Morango">
+                <div class="gallery-info">
+                    <h3>Bolo de Morango</h3>
+                    <p>Bolo delicado com morangos frescos</p>
+                    <div class="price">R$ 95,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo de Morango', 95)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500&h=400&fit=crop" alt="Bolo de Casamento">
+                <div class="gallery-info">
+                    <h3>Bolo de Casamento</h3>
+                    <p>Elegante bolo de três andares</p>
+                    <div class="price">R$ 350,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo de Casamento', 350)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&h=400&fit=crop" alt="Bolo Red Velvet">
+                <div class="gallery-info">
+                    <h3>Bolo Red Velvet</h3>
+                    <p>Clássico bolo vermelho aveludado</p>
+                    <div class="price">R$ 90,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo Red Velvet', 90)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=500&h=400&fit=crop" alt="Bolo Temático Infantil">
+                <div class="gallery-info">
+                    <h3>Bolo Temático Infantil</h3>
+                    <p>Decoração personalizada para festas</p>
+                    <div class="price">R$ 120,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo Temático Infantil', 120)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=500&h=400&fit=crop" alt="Bolo de Cenoura">
+                <div class="gallery-info">
+                    <h3>Bolo de Cenoura</h3>
+                    <p>Tradicional com cobertura de chocolate</p>
+                    <div class="price">R$ 65,00</div>
+                    <button class="btn add-to-cart" onclick="addToCart('Bolo de Cenoura', 65)">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="precos" class="section">
+        <h2 class="section-title">Tabela de Preços</h2>
+        <div class="price-table">
+            <div class="price-card">
+                <h3>Bolos Simples</h3>
+                <div class="price">R$ 65-85</div>
+                <ul>
+                    <li>Chocolate</li>
+                    <li>Cenoura</li>
+                    <li>Laranja</li>
+                    <li>Fubá</li>
+                </ul>
+            </div>
+            <div class="price-card">
+                <h3>Bolos Premium</h3>
+                <div class="price">R$ 90-120</div>
+                <ul>
+                    <li>Red Velvet</li>
+                    <li>Morango</li>
+                    <li>Limão Siciliano</li>
+                    <li>Frutas Vermelhas</li>
+                </ul>
+            </div>
+            <div class="price-card">
+                <h3>Bolos Temáticos</h3>
+                <div class="price">R$ 120-200</div>
+                <ul>
+                    <li>Festas Infantis</li>
+                    <li>Aniversários</li>
+                    <li>Decoração Personalizada</li>
+                    <li>Temas Exclusivos</li>
+                </ul>
+            </div>
+            <div class="price-card">
+                <h3>Bolos de Eventos</h3>
+                <div class="price">R$ 300+</div>
+                <ul>
+                    <li>Casamentos</li>
+                    <li>Formaturas</li>
+                    <li>Múltiplos Andares</li>
+                    <li>Sob Consulta</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="personalizacao" class="section">
+        <h2 class="section-title">Personalize Seu Bolo</h2>
+        <div class="form-container">
+            <form id="customForm">
+                <div class="form-group">
+                    <label>Tipo de Bolo</label>
+                    <select name="tipo" required>
+                        <option value="">Selecione...</option>
+                        <option value="chocolate">Chocolate</option>
+                        <option value="morango">Morango</option>
+                        <option value="redvelvet">Red Velvet</option>
+                        <option value="cenoura">Cenoura</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tamanho</label>
+                    <select name="tamanho" required>
+                        <option value="">Selecione...</option>
+                        <option value="pequeno">Pequeno (15 pessoas) - R$ 65</option>
+                        <option value="medio">Médio (30 pessoas) - R$ 95</option>
+                        <option value="grande">Grande (50 pessoas) - R$ 150</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Decoração Temática</label>
+                    <select name="tema" required>
+                        <option value="">Selecione...</option>
+                        <option value="nenhum">Sem tema</option>
+                        <option value="infantil">Infantil (+R$ 30)</option>
+                        <option value="unicornio">Unicórnio (+R$ 40)</option>
+                        <option value="superheroi">Super-heróis (+R$ 40)</option>
+                        <option value="princesa">Princesas (+R$ 40)</option>
+                        <option value="flores">Flores Naturais (+R$ 50)</option>
+                        <option value="elegante">Elegante (+R$ 35)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mensagem no Bolo</label>
+                    <input type="text" name="mensagem" placeholder="Ex: Feliz Aniversário Maria!">
+                </div>
+                <div class="form-group">
+                    <label>Observações Especiais</label>
+                    <textarea name="observacoes" placeholder="Alergias, preferências, detalhes adicionais..."></textarea>
+                </div>
+                <button type="submit" class="btn">Solicitar Orçamento</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="depoimentos" class="testimonials">
+        <h2 class="section-title">O Que Nossos Clientes Dizem</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"O bolo do meu casamento foi simplesmente perfeito! A Maria capturou exatamente o que eu queria. Todos os convidados elogiaram!"</p>
+                <div class="testimonial-author">- Ana Paula Costa</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"Encomendo bolos com a Maria há anos. Qualidade impecável, sempre frescos e deliciosos. Recomendo muito!"</p>
+                <div class="testimonial-author">- João Santos</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"O bolo temático da festa do meu filho foi incrível! As crianças adoraram e o sabor estava maravilhoso."</p>
+                <div class="testimonial-author">- Carla Mendes</div>
+            </div>
+        </div>
+        
+        <div class="form-container" style="margin-top: 3rem;">
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--cor-escura);">Deixe Seu Depoimento</h3>
+            <form id="testimonialForm">
+                <div class="form-group">
+                    <label>Seu Nome</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Avaliação</label>
+                    <select name="avaliacao" required>
+                        <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                        <option value="4">⭐⭐⭐⭐ Muito Bom</option>
+                        <option value="3">⭐⭐⭐ Bom</option>
+                        <option value="2">⭐⭐ Regular</option>
+                        <option value="1">⭐ Ruim</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Seu Comentário</label>
+                    <textarea name="comentario" required></textarea>
+                </div>
+                <button type="submit" class="btn">Enviar Depoimento</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="contato" class="section">
+        <h2 class="section-title">Entre em Contato</h2>
+        <div class="form-container">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="tel" name="telefone" required>
+                </div>
+                <div class="form-group">
+                    <label>Mensagem</label>
+                    <textarea name="mensagem" required></textarea>
+                </div>
+                <button type="submit" class="btn">Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <h2 style="margin-bottom: 1.5rem; color: var(--cor-escura);">Seu Carrinho</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+            <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="finalizarPedido()">Finalizar Pedido</button>
+            <button class="btn" style="width: 100%; margin-top: 0.5rem; background: #666;" onclick="toggleCart()">Fechar</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Confeitaria Maria Silva - Todos os direitos reservados</p>
+        <p>📍 Barra Bonita, São Paulo | 📞 (14) 99999-9999 | ✉️ contato@mariasilva.com.br</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartCount();
+            alert(`${name} adicionado ao carrinho!`);
+        }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            if (modal.style.display === 'flex') {
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #999;">Seu carrinho está vazio</p>';
+                cartTotal.textContent = 'Total: R$ 0,00';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <strong>${item.name}</strong>
+                            <div>R$ ${item.price.toFixed(2)}</div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">Remover</button>
+                    </div>
+                `;
+            });
+
+            cartItems.innerHTML = html;
+            cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            renderCart();
+        }
+
+        function finalizarPedido() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+
+            let message = 'Olá! Gostaria de fazer o seguinte pedido:\n\n';
+            let total = 0;
+
+            cart.forEach(item => {
+                message += `${item.name} - R$ ${item.price.toFixed(2)}\n`;
+                total += item.price;
+            });
+
+            message += `\nTotal: R$ ${total.toFixed(2)}`;
+
+            alert('Pedido enviado! Em breve entraremos em contato.\n\n' + message);
+            cart = [];
+            updateCartCount();
+            toggleCart();
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+            this.reset();
+        });
+
+        document.getElementById('customForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Orçamento solicitado com sucesso! Entraremos em contato em até 24 horas.');
+            this.reset();
+        });
+
+        document.getElementById('testimonialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Obrigada pelo seu depoimento! Ele será publicado após nossa análise.');
+            this.reset();
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const navLinks = document.getElementById('navLinks');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
